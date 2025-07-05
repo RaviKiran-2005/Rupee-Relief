@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
 import { Calculator, PlusCircle, Trash2, Wallet, Loader2, IndianRupee } from 'lucide-react';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formSchema, type FormValues, type AllocatedItem } from '@/lib/definitions';
 import { calculateAllocation } from '@/app/actions';
 import { useToast } from "@/hooks/use-toast";
@@ -66,87 +67,137 @@ export default function GroceryBudgetPlanner() {
                 </CardHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
-                        <CardContent className="space-y-6">
-                            <FormField
-                                control={form.control}
-                                name="budget"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <FormLabel className="text-lg">Total Budget (₹)</FormLabel>
-                                        <FormControl>
-                                             <div className="relative">
-                                                <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                                <Input
-                                                    type="number"
-                                                    placeholder="Enter your total budget"
-                                                    className="pl-10 text-base shadow-sm hover:shadow-md focus-visible:shadow-md"
-                                                    {...field}
-                                                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
-                                                    value={field.value === undefined || isNaN(field.value) ? '' : field.value}
-                                                />
-                                             </div>
-                                        </FormControl>
-                                        <FormMessage />
-                                    </FormItem>
-                                )}
-                            />
-                            <Separator />
-                            <div>
-                                <h3 className="text-lg font-medium mb-4">Grocery List</h3>
-                                <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
-                                    {fields.map((item, index) => (
-                                        <div key={item.id} className="grid grid-cols-12 gap-3 p-3 bg-background rounded-lg border">
-                                            <div className="col-span-12 sm:col-span-3">
-                                                <FormField control={form.control} name={`items.${index}.name`} render={({ field }) => <Input placeholder="Item Name" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />} />
-                                            </div>
-                                            <div className="col-span-6 sm:col-span-2">
-                                                 <FormField control={form.control} name={`items.${index}.price`} render={({ field }) => ( <Input type="number" placeholder="Price / Unit" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
-                                            </div>
-                                            <div className="col-span-6 sm:col-span-2">
-                                                 <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => ( <Input type="number" step="0.1" placeholder="Desired Qty" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
-                                            </div>
-                                            <div className="col-span-6 sm:col-span-2">
-                                                <FormField control={form.control} name={`items.${index}.unit`} render={({ field }) => (
-                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                         <TooltipProvider delayDuration={100}>
+                            <CardContent className="space-y-6">
+                                <FormField
+                                    control={form.control}
+                                    name="budget"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel className="text-lg">Total Budget (₹)</FormLabel>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
                                                         <FormControl>
-                                                            <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Unit" /></SelectTrigger>
+                                                            <div className="relative">
+                                                                <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                                                                <Input
+                                                                    type="number"
+                                                                    placeholder="Enter your total budget"
+                                                                    className="pl-10 text-base shadow-sm hover:shadow-md focus-visible:shadow-md"
+                                                                    {...field}
+                                                                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
+                                                                    value={field.value === undefined || isNaN(field.value) ? '' : field.value}
+                                                                />
+                                                            </div>
                                                         </FormControl>
-                                                        <SelectContent>
-                                                            <SelectItem value="Kg">Kg</SelectItem>
-                                                            <SelectItem value="L">L</SelectItem>
-                                                            <SelectItem value="Piece">Piece</SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                )} />
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>
+                                                        <p>The maximum amount you want to spend on groceries.</p>
+                                                    </TooltipContent>
+                                                </Tooltip>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+                                <Separator />
+                                <div>
+                                    <h3 className="text-lg font-medium mb-4">Grocery List</h3>
+                                    <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
+                                        {fields.map((item, index) => (
+                                            <div key={item.id} className="grid grid-cols-12 gap-3 p-3 bg-background rounded-lg border">
+                                                <div className="col-span-12 sm:col-span-3">
+                                                    <FormField control={form.control} name={`items.${index}.name`} render={({ field }) => (
+                                                         <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Input placeholder="e.g., Apples" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />
+                                                            </TooltipTrigger>
+                                                            <TooltipContent>
+                                                                <p>The name of the grocery item you want to buy.</p>
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                    )} />
+                                                </div>
+                                                <div className="col-span-6 sm:col-span-2">
+                                                     <FormField control={form.control} name={`items.${index}.price`} render={({ field }) => ( 
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Input type="number" placeholder="e.g., 100" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} />
+                                                            </TooltipTrigger>
+                                                            <TooltipContent>
+                                                                <p>Price for one standard unit (e.g., price per Kg, per L, or per Piece).</p>
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                      )} />
+                                                </div>
+                                                <div className="col-span-6 sm:col-span-2">
+                                                     <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => ( 
+                                                        <Tooltip>
+                                                            <TooltipTrigger asChild>
+                                                                <Input type="number" step="0.1" placeholder="e.g., 2.5" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} />
+                                                            </TooltipTrigger>
+                                                            <TooltipContent>
+                                                                <p>The quantity you want, like 2.5 for Kg/L or 5 for Pieces.</p>
+                                                            </TooltipContent>
+                                                        </Tooltip>
+                                                     )} />
+                                                </div>
+                                                <div className="col-span-6 sm:col-span-2">
+                                                    <FormField control={form.control} name={`items.${index}.unit`} render={({ field }) => (
+                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <FormControl>
+                                                                        <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Unit" /></SelectTrigger>
+                                                                    </FormControl>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>Select the measurement unit for this item.</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                            <SelectContent>
+                                                                <SelectItem value="Kg">Kg</SelectItem>
+                                                                <SelectItem value="L">L</SelectItem>
+                                                                <SelectItem value="Piece">Piece</SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                    )} />
+                                                </div>
+                                                <div className="col-span-6 sm:col-span-2">
+                                                     <FormField control={form.control} name={`items.${index}.priority`} render={({ field }) => (
+                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <Tooltip>
+                                                                <TooltipTrigger asChild>
+                                                                    <FormControl>
+                                                                        <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Priority" /></SelectTrigger>
+                                                                    </FormControl>
+                                                                </TooltipTrigger>
+                                                                <TooltipContent>
+                                                                    <p>How important is this item? High priority items are purchased first.</p>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                            <SelectContent>
+                                                                <SelectItem value="High">High</SelectItem>
+                                                                <SelectItem value="Medium">Medium</SelectItem>
+                                                                <SelectItem value="Low">Low</SelectItem>
+                                                            </SelectContent>
+                                                        </Select>
+                                                     )} />
+                                                </div>
+                                                <div className="col-span-12 sm:col-span-1 flex items-center justify-end">
+                                                    <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)}>
+                                                        <Trash2 className="h-4 w-4 text-destructive" />
+                                                    </Button>
+                                                </div>
                                             </div>
-                                            <div className="col-span-6 sm:col-span-2">
-                                                 <FormField control={form.control} name={`items.${index}.priority`} render={({ field }) => (
-                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                        <FormControl>
-                                                            <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Priority" /></SelectTrigger>
-                                                        </FormControl>
-                                                        <SelectContent>
-                                                            <SelectItem value="High">High</SelectItem>
-                                                            <SelectItem value="Medium">Medium</SelectItem>
-                                                            <SelectItem value="Low">Low</SelectItem>
-                                                        </SelectContent>
-                                                    </Select>
-                                                 )} />
-                                            </div>
-                                            <div className="col-span-12 sm:col-span-1 flex items-center justify-end">
-                                                <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)}>
-                                                    <Trash2 className="h-4 w-4 text-destructive" />
-                                                </Button>
-                                            </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+                                    <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined })}>
+                                        <PlusCircle className="mr-2 h-4 w-4" /> Add Item
+                                    </Button>
+                                    <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
                                 </div>
-                                <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined })}>
-                                    <PlusCircle className="mr-2 h-4 w-4" /> Add Item
-                                </Button>
-                                <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
-                            </div>
-                        </CardContent>
+                            </CardContent>
+                        </TooltipProvider>
                         <CardFooter className="justify-center">
                             <Button
                                 type="submit"
