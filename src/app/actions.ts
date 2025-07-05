@@ -11,7 +11,8 @@ type TempItem = GroceryItem & {
 export async function calculateAllocation(data: unknown) {
     const validation = formSchema.safeParse(data);
     if (!validation.success) {
-        throw new Error("Invalid form data.");
+        // For debugging: console.error(validation.error.errors);
+        throw new Error("Invalid form data. Please check all fields.");
     }
     const { budget, items } = validation.data;
 
@@ -24,9 +25,8 @@ export async function calculateAllocation(data: unknown) {
 
     const priorities: Array<'High' | 'Medium' | 'Low'> = ['High', 'Medium', 'Low'];
 
-    // This determines the smallest fraction of an item we can allocate.
-    // A smaller value gives more precise allocation for divisible goods.
-    const ALLOCATION_STEP = 0.05; // e.g., 50g or 50ml increments
+    const ALLOCATION_STEP_DIVISIBLE = 0.05; // For kg/l
+    const ALLOCATION_STEP_INDIVISIBLE = 1;  // For pieces
 
     for (const priority of priorities) {
         const priorityItems = tempItems.filter(item => item.priority === priority);
@@ -38,9 +38,15 @@ export async function calculateAllocation(data: unknown) {
                 const quantityRemaining = item.quantity - item.allocatedQuantity;
 
                 if (quantityRemaining > 0) {
-                    // Determine the quantity to attempt to add in this step.
-                    // It's the smaller of our allocation step or the actual remaining desired quantity.
-                    const quantityToAttempt = Math.min(ALLOCATION_STEP, quantityRemaining);
+                    const isDivisible = item.unit === 'kg' || item.unit === 'l';
+                    const allocationStep = isDivisible ? ALLOCATION_STEP_DIVISIBLE : ALLOCATION_STEP_INDIVISIBLE;
+                    const quantityToAttempt = Math.min(allocationStep, quantityRemaining);
+                    
+                    // For non-divisible items, we can't attempt a fraction.
+                    if (!isDivisible && quantityToAttempt < 1) {
+                        continue;
+                    }
+
                     const costToAttempt = item.price * quantityToAttempt;
                     
                     if (remainingBudget >= costToAttempt) {
@@ -60,6 +66,7 @@ export async function calculateAllocation(data: unknown) {
             price: item.price,
             desiredQuantity: item.quantity,
             priority: item.priority,
+            unit: item.unit,
             finalQuantity: parseFloat(item.allocatedQuantity.toFixed(2)),
             totalCost: parseFloat((item.allocatedQuantity * item.price).toFixed(2)),
         }));

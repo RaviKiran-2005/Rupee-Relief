@@ -25,7 +25,7 @@ export default function GroceryBudgetPlanner() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             budget: undefined,
-            items: [{ name: '', price: undefined, quantity: undefined, priority: undefined }],
+            items: [{ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined }],
         },
     });
 
@@ -55,7 +55,7 @@ export default function GroceryBudgetPlanner() {
             !results && "items-center"
         )}>
              <Card className={cn("w-full rounded-2xl shadow-lg transition-all duration-500 ease-in-out", 
-                results ? 'lg:max-w-xl' : 'lg:max-w-3xl'
+                results ? 'lg:max-w-2xl' : 'lg:max-w-3xl'
              )}>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl font-headline">
@@ -81,7 +81,7 @@ export default function GroceryBudgetPlanner() {
                                                     placeholder="Enter your total budget"
                                                     className="pl-10 text-base shadow-sm hover:shadow-md focus-visible:shadow-md"
                                                     {...field}
-                                                    onChange={(e) => field.onChange(e.target.value === '' ? '' : e.target.valueAsNumber)}
+                                                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
                                                     value={field.value === undefined || isNaN(field.value) ? '' : field.value}
                                                 />
                                              </div>
@@ -95,68 +95,45 @@ export default function GroceryBudgetPlanner() {
                                 <h3 className="text-lg font-medium mb-4">Grocery List</h3>
                                 <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
                                     {fields.map((item, index) => (
-                                        <div key={item.id} className="grid grid-cols-12 gap-2 p-3 bg-background rounded-lg border">
-                                            <div className="col-span-12 sm:col-span-6">
-                                                <FormField
-                                                    control={form.control}
-                                                    name={`items.${index}.name`}
-                                                    render={({ field }) => <Input placeholder="Item Name" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />}
-                                                />
+                                        <div key={item.id} className="grid grid-cols-12 gap-3 p-3 bg-background rounded-lg border">
+                                            <div className="col-span-12 sm:col-span-3">
+                                                <FormField control={form.control} name={`items.${index}.name`} render={({ field }) => <Input placeholder="Item Name" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />} />
                                             </div>
-                                            <div className="col-span-6 sm:col-span-3">
-                                                 <FormField
-                                                    control={form.control}
-                                                    name={`items.${index}.price`}
-                                                    render={({ field }) => (
-                                                        <Input
-                                                            type="number"
-                                                            placeholder="Price"
-                                                            className="shadow-sm hover:shadow-md focus-visible:shadow-md"
-                                                            {...field}
-                                                            onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
-                                                            value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
-                                                        />
-                                                    )}
-                                                />
+                                            <div className="col-span-6 sm:col-span-2">
+                                                 <FormField control={form.control} name={`items.${index}.price`} render={({ field }) => ( <Input type="number" placeholder="Price" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
                                             </div>
-                                            <div className="col-span-6 sm:col-span-3">
-                                                 <FormField
-                                                    control={form.control}
-                                                    name={`items.${index}.quantity`}
-                                                    render={({ field }) => (
-                                                        <Input
-                                                            type="number"
-                                                            step="0.1"
-                                                            placeholder="Qty"
-                                                            className="shadow-sm hover:shadow-md focus-visible:shadow-md"
-                                                            {...field}
-                                                            onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
-                                                            value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
-                                                        />
-                                                    )}
-                                                />
+                                            <div className="col-span-6 sm:col-span-2">
+                                                 <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => ( <Input type="number" step="0.1" placeholder="Qty" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
                                             </div>
-                                            <div className="col-span-10 sm:col-span-11">
-                                                 <FormField
-                                                    control={form.control}
-                                                    name={`items.${index}.priority`}
-                                                    render={({ field }) => (
-                                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                                            <FormControl>
-                                                                <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md">
-                                                                    <SelectValue placeholder="Priority" />
-                                                                </SelectTrigger>
-                                                            </FormControl>
-                                                            <SelectContent>
-                                                                <SelectItem value="High">High Priority</SelectItem>
-                                                                <SelectItem value="Medium">Medium Priority</SelectItem>
-                                                                <SelectItem value="Low">Low Priority</SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    )}
-                                                />
+                                            <div className="col-span-6 sm:col-span-2">
+                                                <FormField control={form.control} name={`items.${index}.unit`} render={({ field }) => (
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Unit" /></SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectItem value="kg">kg</SelectItem>
+                                                            <SelectItem value="l">l</SelectItem>
+                                                            <SelectItem value="piece">piece</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                )} />
                                             </div>
-                                            <div className="col-span-2 sm:col-span-1 flex items-center justify-end">
+                                            <div className="col-span-6 sm:col-span-2">
+                                                 <FormField control={form.control} name={`items.${index}.priority`} render={({ field }) => (
+                                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                        <FormControl>
+                                                            <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Priority" /></SelectTrigger>
+                                                        </FormControl>
+                                                        <SelectContent>
+                                                            <SelectItem value="High">High</SelectItem>
+                                                            <SelectItem value="Medium">Medium</SelectItem>
+                                                            <SelectItem value="Low">Low</SelectItem>
+                                                        </SelectContent>
+                                                    </Select>
+                                                 )} />
+                                            </div>
+                                            <div className="col-span-12 sm:col-span-1 flex items-center justify-end">
                                                 <Button type="button" variant="ghost" size="icon" onClick={() => remove(index)}>
                                                     <Trash2 className="h-4 w-4 text-destructive" />
                                                 </Button>
@@ -164,7 +141,7 @@ export default function GroceryBudgetPlanner() {
                                         </div>
                                     ))}
                                 </div>
-                                <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined })}>
+                                <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined })}>
                                     <PlusCircle className="mr-2 h-4 w-4" /> Add Item
                                 </Button>
                                 <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
@@ -215,7 +192,7 @@ export default function GroceryBudgetPlanner() {
                                         <TableRow key={item.name}>
                                             <TableCell className="font-medium">{item.name}</TableCell>
                                             <TableCell>{item.priority}</TableCell>
-                                            <TableCell className="text-right">{item.finalQuantity} / {item.desiredQuantity}</TableCell>
+                                            <TableCell className="text-right">{item.finalQuantity} / {item.desiredQuantity} {item.unit}</TableCell>
                                             <TableCell className="text-right">₹{item.totalCost.toFixed(2)}</TableCell>
                                         </TableRow>
                                     ))}

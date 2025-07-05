@@ -4,7 +4,8 @@ export const groceryItemSchema = z.object({
   name: z.string().min(1, { message: "Item name is required." }),
   price: z.coerce.number().positive({ message: "Price must be positive." }),
   quantity: z.coerce.number().positive({ message: "Quantity must be positive." }),
-  priority: z.enum(['High', 'Medium', 'Low']),
+  unit: z.enum(['kg', 'l', 'piece'], { required_error: "Unit is required." }),
+  priority: z.enum(['High', 'Medium', 'Low'], { required_error: "Priority is required." }),
 });
 
 export const formSchema = z.object({
@@ -20,6 +21,7 @@ export interface AllocatedItem {
   price: number;
   desiredQuantity: number;
   priority: 'High' | 'Medium' | 'Low';
+  unit: 'kg' | 'l' | 'piece';
   finalQuantity: number;
   totalCost: number;
 }
