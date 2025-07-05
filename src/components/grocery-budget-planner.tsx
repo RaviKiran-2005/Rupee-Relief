@@ -52,7 +52,7 @@ export default function GroceryBudgetPlanner() {
 
     return (
         <div className={cn("w-full flex justify-center items-start gap-8 transition-all duration-500 ease-in-out",
-            !results && "items-center"
+            results ? 'items-start' : 'items-center'
         )}>
              <Card className={cn("w-full rounded-2xl shadow-lg transition-all duration-500 ease-in-out", 
                 results ? 'lg:max-w-2xl' : 'lg:max-w-3xl'
@@ -100,10 +100,10 @@ export default function GroceryBudgetPlanner() {
                                                 <FormField control={form.control} name={`items.${index}.name`} render={({ field }) => <Input placeholder="Item Name" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />} />
                                             </div>
                                             <div className="col-span-6 sm:col-span-2">
-                                                 <FormField control={form.control} name={`items.${index}.price`} render={({ field }) => ( <Input type="number" placeholder="Price" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
+                                                 <FormField control={form.control} name={`items.${index}.price`} render={({ field }) => ( <Input type="number" placeholder="Price / Unit" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
                                             </div>
                                             <div className="col-span-6 sm:col-span-2">
-                                                 <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => ( <Input type="number" step="0.1" placeholder="Qty" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
+                                                 <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => ( <Input type="number" step="0.1" placeholder="Desired Qty" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} /> )} />
                                             </div>
                                             <div className="col-span-6 sm:col-span-2">
                                                 <FormField control={form.control} name={`items.${index}.unit`} render={({ field }) => (
