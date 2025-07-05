@@ -23,12 +23,8 @@ export default function GroceryBudgetPlanner() {
     const form = useForm<FormValues>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            budget: 1000,
-            items: [
-                { name: 'Rice', price: 50, quantity: 5, priority: 'High' },
-                { name: 'Lentils', price: 120, quantity: 2, priority: 'High' },
-                { name: 'Cooking Oil', price: 150, quantity: 1, priority: 'Medium' },
-            ],
+            budget: undefined,
+            items: [],
         },
     });
 
