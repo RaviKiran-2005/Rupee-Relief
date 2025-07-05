@@ -73,10 +73,10 @@ export default function GroceryBudgetPlanner() {
                                                 <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
                                                 <Input
                                                     type="number"
-                                                    placeholder="e.g., 2500"
+                                                    placeholder="Enter your total budget"
                                                     className="pl-10 text-base"
                                                     {...field}
-                                                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
+                                                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
                                                     value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
                                                 />
                                              </div>
@@ -102,14 +102,31 @@ export default function GroceryBudgetPlanner() {
                                                  <FormField
                                                     control={form.control}
                                                     name={`items.${index}.price`}
-                                                    render={({ field }) => <Input type="number" placeholder="Price" {...field} />}
+                                                    render={({ field }) => (
+                                                        <Input
+                                                            type="number"
+                                                            placeholder="Price"
+                                                            {...field}
+                                                            onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
+                                                            value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
+                                                        />
+                                                    )}
                                                 />
                                             </div>
                                             <div className="col-span-6 sm:col-span-3">
                                                  <FormField
                                                     control={form.control}
                                                     name={`items.${index}.quantity`}
-                                                    render={({ field }) => <Input type="number" step="0.1" placeholder="Qty" {...field} />}
+                                                    render={({ field }) => (
+                                                        <Input
+                                                            type="number"
+                                                            step="0.1"
+                                                            placeholder="Qty"
+                                                            {...field}
+                                                            onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
+                                                            value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
+                                                        />
+                                                    )}
                                                 />
                                             </div>
                                             <div className="col-span-10 sm:col-span-11">
@@ -140,7 +157,7 @@ export default function GroceryBudgetPlanner() {
                                         </div>
                                     ))}
                                 </div>
-                                <Button type="button" variant="outline" className="mt-4 w-full" onClick={() => append({ name: '', price: 0, quantity: 1, priority: 'Medium' })}>
+                                <Button type="button" variant="outline" className="mt-4 w-full" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined })}>
                                     <PlusCircle className="mr-2 h-4 w-4" /> Add Item
                                 </Button>
                                 <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
