@@ -26,7 +26,7 @@ export default function GroceryBudgetPlanner() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             budget: undefined,
-            items: [{ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined }],
+            items: [{ name: '', price: undefined, quantity: undefined, priority: undefined, unit: 'Kg' }],
         },
     });
 
@@ -109,7 +109,7 @@ export default function GroceryBudgetPlanner() {
                                                     <FormField control={form.control} name={`items.${index}.name`} render={({ field }) => (
                                                          <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Input placeholder="e.g., Apples" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />
+                                                                <Input placeholder="Item Name" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />
                                                             </TooltipTrigger>
                                                             <TooltipContent>
                                                                 <p>The name of the grocery item you want to buy.</p>
@@ -121,7 +121,7 @@ export default function GroceryBudgetPlanner() {
                                                      <FormField control={form.control} name={`items.${index}.price`} render={({ field }) => ( 
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Input type="number" placeholder="e.g., 100" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} />
+                                                                <Input type="number" placeholder="Price / Unit" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} />
                                                             </TooltipTrigger>
                                                             <TooltipContent>
                                                                 <p>Price for one standard unit (e.g., price per Kg, per L, or per Piece).</p>
@@ -133,7 +133,7 @@ export default function GroceryBudgetPlanner() {
                                                      <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => ( 
                                                         <Tooltip>
                                                             <TooltipTrigger asChild>
-                                                                <Input type="number" step="0.1" placeholder="e.g., 2.5" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} />
+                                                                <Input type="number" step="0.1" placeholder="Desired Qty" className="shadow-sm hover:shadow-md focus-visible:shadow-md" {...field} onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)} value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value} />
                                                             </TooltipTrigger>
                                                             <TooltipContent>
                                                                 <p>The quantity you want, like 2.5 for Kg/L or 5 for Pieces.</p>
@@ -191,7 +191,7 @@ export default function GroceryBudgetPlanner() {
                                             </div>
                                         ))}
                                     </div>
-                                    <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined })}>
+                                    <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: 'Medium', unit: 'Kg' })}>
                                         <PlusCircle className="mr-2 h-4 w-4" /> Add Item
                                     </Button>
                                     <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
@@ -265,3 +265,5 @@ export default function GroceryBudgetPlanner() {
         </div>
     );
 }
+
+    
