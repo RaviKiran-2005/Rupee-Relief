@@ -51,7 +51,7 @@ export default function GroceryBudgetPlanner() {
 
     return (
         <div className="flex flex-col lg:flex-row justify-center items-start gap-8 w-full">
-            <Card className="w-full lg:max-w-3xl rounded-2xl shadow-lg">
+            <Card className="w-full lg:max-w-3xl rounded-2xl shadow-lg transition-all duration-500 ease-in-out">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl font-headline">
                         <Wallet className="w-6 h-6" />
@@ -74,7 +74,7 @@ export default function GroceryBudgetPlanner() {
                                                 <Input
                                                     type="number"
                                                     placeholder="Enter your total budget"
-                                                    className="pl-10 text-base"
+                                                    className="pl-10 text-base shadow-sm hover:shadow-md focus-visible:shadow-md"
                                                     {...field}
                                                     onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
                                                     value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
@@ -95,7 +95,7 @@ export default function GroceryBudgetPlanner() {
                                                 <FormField
                                                     control={form.control}
                                                     name={`items.${index}.name`}
-                                                    render={({ field }) => <Input placeholder="Item Name" {...field} />}
+                                                    render={({ field }) => <Input placeholder="Item Name" {...field} className="shadow-sm hover:shadow-md focus-visible:shadow-md" />}
                                                 />
                                             </div>
                                             <div className="col-span-6 sm:col-span-3">
@@ -106,6 +106,7 @@ export default function GroceryBudgetPlanner() {
                                                         <Input
                                                             type="number"
                                                             placeholder="Price"
+                                                            className="shadow-sm hover:shadow-md focus-visible:shadow-md"
                                                             {...field}
                                                             onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
                                                             value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
@@ -122,6 +123,7 @@ export default function GroceryBudgetPlanner() {
                                                             type="number"
                                                             step="0.1"
                                                             placeholder="Qty"
+                                                            className="shadow-sm hover:shadow-md focus-visible:shadow-md"
                                                             {...field}
                                                             onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
                                                             value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
@@ -136,7 +138,7 @@ export default function GroceryBudgetPlanner() {
                                                     render={({ field }) => (
                                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                                             <FormControl>
-                                                                <SelectTrigger>
+                                                                <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md">
                                                                     <SelectValue placeholder="Priority" />
                                                                 </SelectTrigger>
                                                             </FormControl>
@@ -157,14 +159,18 @@ export default function GroceryBudgetPlanner() {
                                         </div>
                                     ))}
                                 </div>
-                                <Button type="button" variant="outline" className="mt-4 w-full" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined })}>
+                                <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined })}>
                                     <PlusCircle className="mr-2 h-4 w-4" /> Add Item
                                 </Button>
                                 <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
                             </div>
                         </CardContent>
-                        <CardFooter>
-                            <Button type="submit" className="w-full text-lg py-6" disabled={isPending}>
+                        <CardFooter className="justify-center">
+                            <Button
+                                type="submit"
+                                size="lg"
+                                className="px-12 text-lg transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
+                                disabled={isPending}>
                                 {isPending ? (
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
                                 ) : (
