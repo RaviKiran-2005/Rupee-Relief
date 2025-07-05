@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
-import { Calculator, PlusCircle, Trash2, Wallet, Loader2, IndianRupee } from 'lucide-react';
+import { Calculator, PlusCircle, Trash2, Loader2, IndianRupee } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formSchema, type FormValues, type AllocatedItem } from '@/lib/definitions';
 import { calculateAllocation } from '@/app/actions';
@@ -62,7 +62,6 @@ export default function GroceryBudgetPlanner() {
              )}>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl font-headline">
-                        <Wallet className="w-6 h-6" />
                         Budget & Items
                     </CardTitle>
                     <CardDescription>Enter your budget and the groceries you need.</CardDescription>
