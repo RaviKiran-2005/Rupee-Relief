@@ -13,7 +13,8 @@ import { Separator } from '@/components/ui/separator';
 import { Calculator, PlusCircle, Trash2, Wallet, Loader2, IndianRupee } from 'lucide-react';
 import { formSchema, type FormValues, type AllocatedItem } from '@/lib/definitions';
 import { calculateAllocation } from '@/app/actions';
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
+import { cn } from '@/lib/utils';
 
 export default function GroceryBudgetPlanner() {
     const [isPending, startTransition] = useTransition();
@@ -50,8 +51,10 @@ export default function GroceryBudgetPlanner() {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row justify-center items-start gap-8 w-full">
-            <Card className="w-full lg:max-w-3xl rounded-2xl shadow-lg transition-all duration-500 ease-in-out">
+        <div className="flex flex-col lg:flex-row items-start gap-8">
+             <Card className={cn("w-full rounded-2xl shadow-lg transition-all duration-500 ease-in-out", 
+                results ? 'lg:max-w-xl' : 'lg:max-w-3xl'
+             )}>
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl font-headline">
                         <Wallet className="w-6 h-6" />
@@ -76,8 +79,8 @@ export default function GroceryBudgetPlanner() {
                                                     placeholder="Enter your total budget"
                                                     className="pl-10 text-base shadow-sm hover:shadow-md focus-visible:shadow-md"
                                                     {...field}
-                                                    onChange={(e) => field.onChange(e.target.value === '' ? undefined : e.target.valueAsNumber)}
-                                                    value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
+                                                    onChange={(e) => field.onChange(e.target.value === '' ? '' : e.target.valueAsNumber)}
+                                                    value={field.value === undefined || isNaN(field.value) ? '' : field.value}
                                                 />
                                              </div>
                                         </FormControl>
@@ -169,7 +172,7 @@ export default function GroceryBudgetPlanner() {
                             <Button
                                 type="submit"
                                 size="lg"
-                                className="px-12 text-lg transition-transform duration-200 ease-out hover:scale-105 active:scale-95"
+                                className="px-8 text-lg transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
                                 disabled={isPending}>
                                 {isPending ? (
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
@@ -183,9 +186,9 @@ export default function GroceryBudgetPlanner() {
                 </Form>
             </Card>
 
-            <div className="w-full lg:max-w-lg">
-                {results && (
-                     <Card className="lg:sticky lg:top-8 rounded-2xl shadow-lg animate-in fade-in-0 slide-in-from-bottom-5 duration-500">
+            {results && (
+                <div className="w-full lg:max-w-lg">
+                    <Card className="lg:sticky lg:top-8 rounded-2xl shadow-lg animate-in fade-in-0 slide-in-from-bottom-5 duration-500">
                         <CardHeader>
                              <CardTitle className="text-2xl font-headline">Allocation Results</CardTitle>
                              <CardDescription>Here's what you can buy within your budget.</CardDescription>
@@ -225,8 +228,8 @@ export default function GroceryBudgetPlanner() {
                             </Table>
                         </CardContent>
                     </Card>
-                )}
-            </div>
+                </div>
+            )}
         </div>
     );
 }
