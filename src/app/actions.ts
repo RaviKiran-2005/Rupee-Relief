@@ -38,7 +38,7 @@ export async function calculateAllocation(data: unknown) {
                 const quantityRemaining = item.quantity - item.allocatedQuantity;
 
                 if (quantityRemaining > 0) {
-                    const isDivisible = item.unit === 'kg' || item.unit === 'l';
+                    const isDivisible = item.unit === 'Kg' || item.unit === 'L';
                     const allocationStep = isDivisible ? ALLOCATION_STEP_DIVISIBLE : ALLOCATION_STEP_INDIVISIBLE;
                     const quantityToAttempt = Math.min(allocationStep, quantityRemaining);
                     

@@ -112,9 +112,9 @@ export default function GroceryBudgetPlanner() {
                                                             <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Unit" /></SelectTrigger>
                                                         </FormControl>
                                                         <SelectContent>
-                                                            <SelectItem value="kg">kg</SelectItem>
-                                                            <SelectItem value="l">l</SelectItem>
-                                                            <SelectItem value="piece">piece</SelectItem>
+                                                            <SelectItem value="Kg">Kg</SelectItem>
+                                                            <SelectItem value="L">L</SelectItem>
+                                                            <SelectItem value="Piece">Piece</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 )} />
