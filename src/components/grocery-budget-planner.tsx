@@ -25,7 +25,7 @@ export default function GroceryBudgetPlanner() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             budget: undefined,
-            items: [],
+            items: [{ name: '', price: undefined, quantity: undefined, priority: undefined }],
         },
     });
 
@@ -51,7 +51,9 @@ export default function GroceryBudgetPlanner() {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row items-start gap-8">
+        <div className={cn("w-full flex justify-center items-start gap-8 transition-all duration-500 ease-in-out",
+            !results && "items-center"
+        )}>
              <Card className={cn("w-full rounded-2xl shadow-lg transition-all duration-500 ease-in-out", 
                 results ? 'lg:max-w-xl' : 'lg:max-w-3xl'
              )}>
