@@ -3,7 +3,7 @@ import { ShoppingBasket } from 'lucide-react';
 
 export default function Home() {
   return (
-    <div className="flex flex-col items-center justify-start min-h-screen w-full p-4 sm:p-6 lg:p-8">
+    <div className="flex flex-col items-center justify-center min-h-screen w-full p-4 sm:p-6 lg:p-8">
       <div className="w-full max-w-7xl">
         <header className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground flex items-center justify-center gap-3">
