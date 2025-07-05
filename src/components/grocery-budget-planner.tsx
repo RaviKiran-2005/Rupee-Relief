@@ -71,7 +71,13 @@ export default function GroceryBudgetPlanner() {
                                         <FormControl>
                                              <div className="relative">
                                                 <IndianRupee className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                                                <Input type="number" placeholder="e.g., 2500" className="pl-10 text-base" {...field} />
+                                                <Input
+                                                    type="number"
+                                                    placeholder="e.g., 2500"
+                                                    className="pl-10 text-base"
+                                                    {...field}
+                                                    value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
+                                                />
                                              </div>
                                         </FormControl>
                                         <FormMessage />
