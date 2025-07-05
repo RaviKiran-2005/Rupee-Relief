@@ -14,7 +14,7 @@ import { Calculator, PlusCircle, Trash2, Wallet, Loader2, IndianRupee } from 'lu
 import { formSchema, type FormValues, type AllocatedItem } from '@/lib/definitions';
 import { calculateAllocation } from '@/app/actions';
 import { useToast } from "@/hooks/use-toast";
-import { cn } from '@/lib/utils';
+import { cn, formatQuantity } from '@/lib/utils';
 
 export default function GroceryBudgetPlanner() {
     const [isPending, startTransition] = useTransition();
@@ -183,7 +183,8 @@ export default function GroceryBudgetPlanner() {
                                     <TableRow>
                                         <TableHead>Item</TableHead>
                                         <TableHead>Priority</TableHead>
-                                        <TableHead className="text-right">Quantity</TableHead>
+                                        <TableHead className="text-right">Desired</TableHead>
+                                        <TableHead className="text-right">Allocated</TableHead>
                                         <TableHead className="text-right">Cost</TableHead>
                                     </TableRow>
                                 </TableHeader>
@@ -192,13 +193,14 @@ export default function GroceryBudgetPlanner() {
                                         <TableRow key={item.name}>
                                             <TableCell className="font-medium">{item.name}</TableCell>
                                             <TableCell>{item.priority}</TableCell>
-                                            <TableCell className="text-right">{item.finalQuantity} / {item.desiredQuantity} {item.unit}</TableCell>
+                                            <TableCell className="text-right">{item.desiredQuantity} {item.unit}</TableCell>
+                                            <TableCell className="text-right">{formatQuantity(item.finalQuantity, item.unit)}</TableCell>
                                             <TableCell className="text-right">₹{item.totalCost.toFixed(2)}</TableCell>
                                         </TableRow>
                                     ))}
                                     {results.allocatedItems.length === 0 && (
                                         <TableRow>
-                                            <TableCell colSpan={4} className="text-center text-muted-foreground">
+                                            <TableCell colSpan={5} className="text-center text-muted-foreground">
                                                 No items could be allocated with the current budget.
                                             </TableCell>
                                         </TableRow>
