@@ -55,7 +55,7 @@ export default function GroceryBudgetPlanner() {
 
     return (
         <TooltipProvider delayDuration={0}>
-        <div className={cn("w-full flex justify-center items-start gap-8 transition-all duration-500 ease-in-out",
+        <div className={cn("w-full flex flex-col lg:flex-row justify-center items-start gap-8 transition-all duration-500 ease-in-out",
             results ? 'items-start' : 'items-center'
         )}>
              <Card className={cn("w-full rounded-2xl shadow-lg transition-all duration-500 ease-in-out", 
@@ -319,8 +319,8 @@ export default function GroceryBudgetPlanner() {
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Item</TableHead>
-                                        <TableHead>Priority</TableHead>
-                                        <TableHead className="text-right">Desired</TableHead>
+                                        <TableHead className="hidden sm:table-cell">Priority</TableHead>
+                                        <TableHead className="text-right hidden sm:table-cell">Desired</TableHead>
                                         <TableHead className="text-right">Allocated</TableHead>
                                         <TableHead className="text-right">Cost</TableHead>
                                     </TableRow>
@@ -329,8 +329,8 @@ export default function GroceryBudgetPlanner() {
                                     {results.allocatedItems.map((item) => (
                                         <TableRow key={item.name}>
                                             <TableCell className="font-medium">{item.name}</TableCell>
-                                            <TableCell>{item.priority}</TableCell>
-                                            <TableCell className="text-right">{item.desiredQuantity} {item.unit}</TableCell>
+                                            <TableCell className="hidden sm:table-cell">{item.priority}</TableCell>
+                                            <TableCell className="text-right hidden sm:table-cell">{item.desiredQuantity} {item.unit}</TableCell>
                                             <TableCell className="text-right">{formatQuantity(item.finalQuantity, item.unit)}</TableCell>
                                             <TableCell className="text-right">₹{item.totalCost.toFixed(2)}</TableCell>
                                         </TableRow>
