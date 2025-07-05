@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Separator } from '@/components/ui/separator';
-import { Calculator, PlusCircle, Trash2, Loader2, IndianRupee, Wallet } from 'lucide-react';
+import { Calculator, PlusCircle, Trash2, Loader2, IndianRupee, Wallet, ShoppingBasket } from 'lucide-react';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { formSchema, type FormValues, type AllocatedItem } from '@/lib/definitions';
 import { calculateAllocation } from '@/app/actions';
@@ -28,7 +28,8 @@ export default function GroceryBudgetPlanner() {
         defaultValues: {
             budget: undefined,
             items: [{ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined }],
-        } as any,
+        },
+        mode: 'onBlur'
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -75,7 +76,7 @@ export default function GroceryBudgetPlanner() {
                                     name="budget"
                                     render={({ field }) => {
                                         const fieldName = "budget";
-                                        const isTooltipOpen = activeField === fieldName && (field.value === undefined || isNaN(field.value));
+                                        const isTooltipOpen = activeField === fieldName && (field.value === undefined || isNaN(field.value) || field.value === 0);
                                         return (
                                             <FormItem>
                                                 <FormLabel className="text-lg">Total Budget (₹)</FormLabel>
@@ -139,7 +140,7 @@ export default function GroceryBudgetPlanner() {
                                                 <div className="col-span-6 sm:col-span-2">
                                                      <FormField control={form.control} name={`items.${index}.price`} render={({ field }) => {
                                                         const fieldName = `items.${index}.price`;
-                                                        const isTooltipOpen = activeField === fieldName && (field.value === undefined || isNaN(field.value));
+                                                        const isTooltipOpen = activeField === fieldName && (field.value === undefined || isNaN(field.value) || field.value === 0);
                                                         return (
                                                             <FormControl>
                                                                 <Tooltip open={isTooltipOpen}>
@@ -164,7 +165,7 @@ export default function GroceryBudgetPlanner() {
                                                 <div className="col-span-6 sm:col-span-2">
                                                      <FormField control={form.control} name={`items.${index}.quantity`} render={({ field }) => {
                                                         const fieldName = `items.${index}.quantity`;
-                                                        const isTooltipOpen = activeField === fieldName && (field.value === undefined || isNaN(field.value));
+                                                        const isTooltipOpen = activeField === fieldName && (field.value === undefined || isNaN(field.value) || field.value === 0);
                                                         return (
                                                             <FormControl>
                                                                 <Tooltip open={isTooltipOpen}>
@@ -206,6 +207,7 @@ export default function GroceryBudgetPlanner() {
                                                                             <SelectTrigger 
                                                                                 className="shadow-sm hover:shadow-md focus-visible:shadow-md"
                                                                                 onFocus={() => setActiveField(fieldName)}
+                                                                                onClick={() => {if (activeField !== fieldName) setActiveField(fieldName)}}
                                                                             >
                                                                                 <SelectValue placeholder="Unit" />
                                                                             </SelectTrigger>
@@ -242,6 +244,7 @@ export default function GroceryBudgetPlanner() {
                                                                             <SelectTrigger 
                                                                                 className="shadow-sm hover:shadow-md focus-visible:shadow-md"
                                                                                 onFocus={() => setActiveField(fieldName)}
+                                                                                onClick={() => {if (activeField !== fieldName) setActiveField(fieldName)}}
                                                                             >
                                                                                 <SelectValue placeholder="Priority" />
                                                                             </SelectTrigger>
@@ -275,7 +278,7 @@ export default function GroceryBudgetPlanner() {
                                             </div>
                                         ))}
                                     </div>
-                                    <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined } as any)}>
+                                    <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined })}>
                                         <PlusCircle className="mr-2 h-4 w-4" /> Add Item
                                     </Button>
                                     <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
@@ -285,7 +288,7 @@ export default function GroceryBudgetPlanner() {
                             <Button
                                 type="submit"
                                 size="lg"
-                                className="px-8 text-lg transition-transform duration-200 ease-out hover:scale-110 active:scale-95"
+                                className="px-8 text-lg transition-all duration-200 ease-out hover:scale-110 active:scale-95 hover:shadow-xl hover:shadow-ring/40 active:shadow-lg active:shadow-ring/20"
                                 disabled={isPending}>
                                 {isPending ? (
                                     <Loader2 className="mr-2 h-5 w-5 animate-spin" />
