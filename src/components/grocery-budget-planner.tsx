@@ -26,8 +26,8 @@ export default function GroceryBudgetPlanner() {
         resolver: zodResolver(formSchema),
         defaultValues: {
             budget: undefined,
-            items: [{ name: '', price: undefined, quantity: undefined, priority: 'Medium', unit: 'Kg' }],
-        },
+            items: [{ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined }],
+        } as any,
     });
 
     const { fields, append, remove } = useFieldArray({
@@ -52,6 +52,7 @@ export default function GroceryBudgetPlanner() {
     };
 
     return (
+        <TooltipProvider delayDuration={0}>
         <div className={cn("w-full flex justify-center items-start gap-8 transition-all duration-500 ease-in-out",
             results ? 'items-start' : 'items-center'
         )}>
@@ -67,7 +68,6 @@ export default function GroceryBudgetPlanner() {
                 </CardHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)}>
-                         <TooltipProvider>
                             <CardContent className="space-y-6">
                                 <FormField
                                     control={form.control}
@@ -150,7 +150,7 @@ export default function GroceryBudgetPlanner() {
                                                 <div className="col-span-6 sm:col-span-2">
                                                     <FormField control={form.control} name={`items.${index}.unit`} render={({ field }) => (
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <Select onValueChange={field.onChange} value={field.value}>
                                                                 <Tooltip>
                                                                     <TooltipTrigger asChild>
                                                                         <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Unit" /></SelectTrigger>
@@ -171,7 +171,7 @@ export default function GroceryBudgetPlanner() {
                                                 <div className="col-span-6 sm:col-span-2">
                                                      <FormField control={form.control} name={`items.${index}.priority`} render={({ field }) => (
                                                         <FormControl>
-                                                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                                            <Select onValueChange={field.onChange} value={field.value}>
                                                                 <Tooltip>
                                                                     <TooltipTrigger asChild>
                                                                         <SelectTrigger className="shadow-sm hover:shadow-md focus-visible:shadow-md"><SelectValue placeholder="Priority" /></SelectTrigger>
@@ -197,13 +197,12 @@ export default function GroceryBudgetPlanner() {
                                             </div>
                                         ))}
                                     </div>
-                                    <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: 'Medium', unit: 'Kg' })}>
+                                    <Button type="button" variant="outline" className="mt-4 w-full shadow-sm hover:shadow-md" onClick={() => append({ name: '', price: undefined, quantity: undefined, priority: undefined, unit: undefined } as any)}>
                                         <PlusCircle className="mr-2 h-4 w-4" /> Add Item
                                     </Button>
                                     <FormMessage>{form.formState.errors.items?.root?.message}</FormMessage>
                                 </div>
                             </CardContent>
-                        </TooltipProvider>
                         <CardFooter className="justify-center">
                             <Button
                                 type="submit"
@@ -269,5 +268,6 @@ export default function GroceryBudgetPlanner() {
                 </div>
             )}
         </div>
+        </TooltipProvider>
     );
 }
