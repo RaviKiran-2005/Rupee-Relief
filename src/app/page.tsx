@@ -7,7 +7,7 @@ export default function Home() {
       <div className="w-full max-w-7xl">
         <header className="text-center mb-8">
           <h1 className="text-4xl md:text-5xl font-bold font-headline text-foreground flex items-center justify-center gap-3">
-            <ShoppingBasket className="w-10 h-10 text-primary" />
+            <ShoppingBasket className="w-10 h-10 text-foreground transition-all duration-300 hover:text-ring hover:drop-shadow-[0_0_8px_hsl(var(--ring))]" />
             Rupee Relief
           </h1>
           <p className="text-muted-foreground mt-2 text-lg">Your Smart Grocery Budget Planner</p>

@@ -50,8 +50,8 @@ export default function GroceryBudgetPlanner() {
     };
 
     return (
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-8 items-start">
-            <Card className="lg:col-span-2 rounded-2xl shadow-lg">
+        <div className="flex flex-col lg:flex-row justify-center items-start gap-8 w-full">
+            <Card className="w-full lg:max-w-3xl rounded-2xl shadow-lg">
                 <CardHeader>
                     <CardTitle className="flex items-center gap-2 text-2xl font-headline">
                         <Wallet className="w-6 h-6" />
@@ -76,6 +76,7 @@ export default function GroceryBudgetPlanner() {
                                                     placeholder="e.g., 2500"
                                                     className="pl-10 text-base"
                                                     {...field}
+                                                    onChange={(e) => field.onChange(e.target.valueAsNumber)}
                                                     value={field.value === undefined || Number.isNaN(field.value) ? '' : field.value}
                                                 />
                                              </div>
@@ -87,7 +88,7 @@ export default function GroceryBudgetPlanner() {
                             <Separator />
                             <div>
                                 <h3 className="text-lg font-medium mb-4">Grocery List</h3>
-                                <div className="space-y-4">
+                                <div className="space-y-4 max-h-[50vh] overflow-y-auto pr-2">
                                     {fields.map((item, index) => (
                                         <div key={item.id} className="grid grid-cols-12 gap-2 p-3 bg-background rounded-lg border">
                                             <div className="col-span-12 sm:col-span-6">
@@ -159,9 +160,9 @@ export default function GroceryBudgetPlanner() {
                 </Form>
             </Card>
 
-            <div className="lg:col-span-3">
+            <div className="w-full lg:max-w-lg">
                 {results && (
-                     <Card className="rounded-2xl shadow-lg animate-in fade-in-0 slide-in-from-bottom-5 duration-500">
+                     <Card className="lg:sticky lg:top-8 rounded-2xl shadow-lg animate-in fade-in-0 slide-in-from-bottom-5 duration-500">
                         <CardHeader>
                              <CardTitle className="text-2xl font-headline">Allocation Results</CardTitle>
                              <CardDescription>Here's what you can buy within your budget.</CardDescription>
